@@ -11,7 +11,7 @@ var app = {
   },
 
   drawBoard:()=>{
-    var board = document.getElementById('board');
+    app.board = document.getElementById('board');
 
     for (let indexRow = 0; indexRow < 4; indexRow++) {
       var row = document.createElement('div');
@@ -34,8 +34,17 @@ var app = {
         };        
       }
   
-      board.appendChild(row);
+      app.board.appendChild(row);
     }
+  },
+
+  clearBoard:()=>{
+    app.board.textContent = '';
+  },
+
+  redrawBoard:()=>{
+    app.clearBoard();
+    app.drawBoard();
   },
 
   init: function () {
