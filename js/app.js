@@ -30,44 +30,13 @@ var app = {
         if (indexRow === app.gamer.positionY && indexCell === app.gamer.positionX) {
           app.player = document.createElement('div');
           app.player.classList.add('player');
+          app.player.classList.add(app.gamer.direction);
           cell.appendChild(app.player);
         };        
       }
   
       app.board.appendChild(row);
     }
-  },
-
-  turnLeft:()=>{
-    if(app.gamer.direction === 'right') {
-      app.player.style.transform = 'rotate(-0.25turn)';
-      app.gamer.direction = 'up';
-    } else if(app.gamer.direction === 'up') {
-        app.player.style.transform = 'rotate(-0.5turn)';
-        app.gamer.direction = 'left';
-    }else if(app.gamer.direction === 'left') {
-        app.player.style.transform = 'rotate(-0.75turn)';
-        app.gamer.direction = 'bottom';
-    }else if(app.gamer.direction === 'bottom') {
-        app.player.style.transform = 'rotate(0)';
-        app.gamer.direction = 'right';
-    };
-  },
-
-  turnRight:()=>{
-    if(app.gamer.direction === 'right') {
-      app.player.style.transform = 'rotate(0.25turn)';
-      app.gamer.direction = 'bottom';
-    } else if(app.gamer.direction === 'bottom') {
-        app.player.style.transform = 'rotate(0.5turn)';
-        app.gamer.direction = 'left';
-    } else if(app.gamer.direction === 'left') {
-      app.player.style.transform = 'rotate(0.75turn)';
-      app.gamer.direction = 'up';
-    } else if(app.gamer.direction === 'up') {
-      app.player.style.transform = 'rotate(0turn)';
-      app.gamer.direction = 'right';
-    };
   },
 
   clearBoard:()=>{
@@ -79,13 +48,40 @@ var app = {
     app.drawBoard();
   },
 
+  turnLeft:()=>{
+    if(app.gamer.direction === 'right') {app.gamer.direction = 'up';}
+    else if(app.gamer.direction === 'up') {app.gamer.direction = 'left';}
+    else if(app.gamer.direction === 'left') {app.gamer.direction = 'down';}
+    else if(app.gamer.direction === 'down') {app.gamer.direction = 'right';};
+
+    app.redrawBoard();
+  },
+
+  turnRight:()=>{
+    if(app.gamer.direction === 'right') {app.gamer.direction = 'down';}
+    else if(app.gamer.direction === 'down') {app.gamer.direction = 'left';}
+    else if(app.gamer.direction === 'left') {app.gamer.direction = 'up';}
+    else if(app.gamer.direction === 'up') {app.gamer.direction = 'right';};
+
+    app.redrawBoard();
+  },
+
+  moveForward: () => {
+    if (app.gamer.direction === 'right' && app.gamer.positionX<5) {app.gamer.positionX++;}
+    if (app.gamer.direction === 'left' && app.gamer.positionX>0) {app.gamer.positionX--;}
+    if (app.gamer.direction === 'up' && app.gamer.positionY>0) {app.gamer.positionY--;}
+    if (app.gamer.direction === 'down' && app.gamer.positionY<3) {app.gamer.positionY++;}
+
+    app.redrawBoard();
+  },
+
   init: function () {
     console.log('init !');
 
     app.drawBoard();
 
     document.body.addEventListener('keyup', (event)=>{
-      // console.log(event);
+      console.log(event);
       if(event.keyCode === 37) {
           app.turnLeft();
       };
@@ -93,6 +89,11 @@ var app = {
       if(event.keyCode === 39) {
         app.turnRight();
       };
+
+      if(event.keyCode === 38) {
+        app.moveForward();
+      };
+
     })
   }
 };
