@@ -1,5 +1,5 @@
 var app = {
-  player:{
+  gamer:{
     positionX: 0,
     positionY: 0,
     direction: 'right',
@@ -27,15 +27,47 @@ var app = {
           cell.classList.add('targetCell');
         };
 
-        if (indexRow === app.player.positionY && indexCell === app.player.positionX) {
-          var player = document.createElement('div');
-          player.classList.add('player');
-          cell.appendChild(player);
+        if (indexRow === app.gamer.positionY && indexCell === app.gamer.positionX) {
+          app.player = document.createElement('div');
+          app.player.classList.add('player');
+          cell.appendChild(app.player);
         };        
       }
   
       app.board.appendChild(row);
     }
+  },
+
+  turnLeft:()=>{
+    if(app.gamer.direction === 'right') {
+      app.player.style.transform = 'rotate(-0.25turn)';
+      app.gamer.direction = 'up';
+    } else if(app.gamer.direction === 'up') {
+        app.player.style.transform = 'rotate(-0.5turn)';
+        app.gamer.direction = 'left';
+    }else if(app.gamer.direction === 'left') {
+        app.player.style.transform = 'rotate(-0.75turn)';
+        app.gamer.direction = 'bottom';
+    }else if(app.gamer.direction === 'bottom') {
+        app.player.style.transform = 'rotate(0)';
+        app.gamer.direction = 'right';
+    };
+  },
+
+  turnRight:()=>{
+    if(app.gamer.direction === 'right') {
+      app.player.style.transform = 'rotate(0.25turn)';
+      app.gamer.direction = 'bottom';
+    } else if(app.gamer.direction === 'bottom') {
+        app.player.style.transform = 'rotate(0.5turn)';
+        app.gamer.direction = 'left';
+    } else if(app.gamer.direction === 'left') {
+      app.player.style.transform = 'rotate(0.75turn)';
+      app.gamer.direction = 'up';
+    } else if(app.gamer.direction === 'up') {
+      app.player.style.transform = 'rotate(0turn)';
+      app.gamer.direction = 'right';
+    };
   },
 
   clearBoard:()=>{
@@ -51,6 +83,17 @@ var app = {
     console.log('init !');
 
     app.drawBoard();
+
+    document.body.addEventListener('keyup', (event)=>{
+      // console.log(event);
+      if(event.keyCode === 37) {
+          app.turnLeft();
+      };
+
+      if(event.keyCode === 39) {
+        app.turnRight();
+      };
+    })
   }
 };
 
